@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lomis.dao.two.ProductDao" >
+	
+	<insert id="insert" parameterType="cn.lomis.po.two.Product">
+		insert into product (		
+			name,
+			price,
+			`desc`
+		) 
+		values(
+			#{name},
+			#{price},
+			#{desc}
+		)
+	</insert>
+	
+	<delete id="delete">
+		delete from product where id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="cn.lomis.po.two.Product">
+		update product
+		 <set>
+		 	<if test="name != null" >name  = #{name}, </if>
+		 	<if test="price != null">price = #{price},</if>
+		 	<if test="desc != null" >`desc`  = #{desc}, </if>
+		 </set>
+		where id = #{id}
+	</update>
+	
+	<select id="getProduct" resultType="cn.lomis.po.two.Product">
+		select * from product where id = #{id} 
+	</select>
+	
+	<select id="findProduct" resultType="cn.lomis.po.two.Product">
+		select * from product
+	</select>
+	
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+	<property name="APP_NAME" value="doubleDB" />
+	<property name="LOG_PATH" value="./logs/${APP_NAME}" />
+	<property name="ENCODER_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-21t] [%-5p] %60.40c >>> %msg%n" />
+	
+	<contextName>${APP_NAME}</contextName>
+	
+	<!-- 控制台输出日志 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${ENCODER_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	<!--每天生成一个日志文件，保存90天的日志文件。 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>90</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${ENCODER_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	<!--指定logger name为包名或类全名 指定级别 additivity设置是否传递到root logger -->
+	<logger name="slf4j" level="INFO" additivity="false">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="org.springframework" level="ERROR" additivity="true">
+	</logger>
+	<!--根logger控制 -->
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

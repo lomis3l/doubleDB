@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/task  
+		http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:pro/db.properties" />
+	</bean>
+	
+	<import resource="classpath*:spring/spring-*.xml" />
+	<!-- <import resource="classpath*:spring/spring-db-base.xml" />
+	<import resource="classpath*:spring/spring-db-one.xml" />
+	<import resource="classpath*:spring/spring-db-one-mybaits.xml" />
+	<import resource="classpath*:spring/spring-db-two.xml" />
+	<import resource="classpath*:spring/spring-db-two-mybatis.xml" /> -->
+		
+	<!-- 解决@ResponseBody返回中文字符串乱码 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8"></property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 自动扫描包，可以写多个 -->
+	<context:component-scan base-package="cn.lomis"></context:component-scan>
+	
+	<!-- 允许对静态资源文件的访问 -->
+	<mvc:default-servlet-handler />
+	
+	<!-- 总错误处理 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/error.html" />
+		<property name="defaultStatusCode" value="500" />
+		<property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" />
+	</bean>
+
+</beans>

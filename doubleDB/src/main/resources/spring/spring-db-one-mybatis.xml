@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <description>Sql Mapping配置</description>
+    <bean id="one_sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="one_dataSourceProxy"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:mybatis/one/**/*.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!-- JDBC template -->
+    <bean id="one_jdbcTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg>
+            <ref bean="one_sessionFactory"></ref>
+        </constructor-arg>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.lomis.dao.one"/>
+        <property name="sqlSessionTemplateBeanName" value="one_jdbcTemplate"></property>
+    </bean>
+    <bean id="one_transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="one_dataSourceProxy"></property>
+    </bean>
+    <!-- 配置事务的传播特性 -->
+    <tx:advice id="one_txAdvice" transaction-manager="one_transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="one_allServiceMethod" expression="execution(* cn.lomis.service.*.*(..))"/>
+        <aop:advisor pointcut-ref="one_allServiceMethod" advice-ref="one_txAdvice"/>
+    </aop:config>
+</beans>

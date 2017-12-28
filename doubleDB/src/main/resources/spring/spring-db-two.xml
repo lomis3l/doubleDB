@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <description>量化数据库配置</description>
+    	
+	<bean id="two_dataSource" parent="parentDataSource" init-method="init">
+		<!-- 基本属性 url、user、password -->
+        <property name="url" value="${two.db.url}"/>
+        <property name="username" value="${two.db.username}"/>
+        <property name="password" value="${two.db.password}"/>
+	</bean>
+    <bean id="two_dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <property name="targetDataSource" ref="two_dataSource"/>
+    </bean>
+</beans>

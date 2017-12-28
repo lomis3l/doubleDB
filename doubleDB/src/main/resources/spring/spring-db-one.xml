@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <description>海纳数据库配置</description>
+    	
+	<bean id="one_dataSource" parent="parentDataSource" init-method="init">
+		<!-- 基本属性 url、user、password -->
+        <property name="url" value="${one.db.url}"/>
+        <property name="username" value="${one.db.username}"/>
+        <property name="password" value="${one.db.password}"/>
+	</bean>
+    <bean id="one_dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <property name="targetDataSource" ref="one_dataSource"/>
+    </bean>
+</beans>
