@@ -39,8 +39,7 @@
 	<mvc:default-servlet-handler />
 	
 	<!-- 总错误处理 -->
-	<bean id="exceptionResolver"
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="/error.html" />
 		<property name="defaultStatusCode" value="500" />
 		<property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" />

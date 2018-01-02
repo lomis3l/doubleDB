@@ -53,4 +53,9 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
+	<!-- 配置404错误页 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error.html</location>
+	</error-page>
 </web-app>
